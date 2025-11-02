@@ -1,0 +1,53 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Customer Dashboard[XYZ Household Services]{% endblock %}
+{% block nav_first %}<a class="nav-link" href="{{url_for('customer_dashboard')}}"><b>Home</b></a>{% endblock %}
+{% block nav_second %}<a class="nav-link" href="{{url_for('customer_dashboard_summary')}}"><b>Summary</b></a>{% endblock %}
+{% block nav_third %}<a class="nav-link" href="{{url_for('customer_dashboard_search')}}"><b>Search</b></a>{% endblock %}
+{% block content %}
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <p class="h1 mb-3 mt-3"><b>Service Remarks</b></p>
+    <p class="h3 mb-3 mt-3"><b>Request ID: {{req.id}}</b></p>
+    <table class="table table-dark table-striped">
+    <thead>
+    <tr>
+        <th class="align-middle" style="width:33%">
+            Service: {{ pro.service_type }}
+        </th>
+        <th class="align-middle" style="width:33%">
+            Service Professional: {{ pro.first_name+" "+pro.last_name }}
+        </th>
+        <th class="align-middle" style="width:33%">
+            Date of Completion: {{ current_date }}
+        </ths>
+    </tr>
+    </thead>
+    </table>
+    <div class="row">
+        <div class="col">
+            <form action="/customer/close/request/{{ req.id }}" method="POST">
+                <div class="mb-3">
+                    <p class="h5 m-2"><b>Please rate the service provided:</b></p>
+                    <label for="one_star" style="color:yellow">★</label>★★★★
+                    <input type="radio" id="one_star" name="rating" value="1" required><br>
+                    <label for="two_star" style="color:yellow">★★</label>★★★
+                    <input type="radio" id="two_star" name="rating" value="2"><br>
+                    <label for="three_star" style="color:yellow">★★★</label>★★
+                    <input type="radio" id="three_star" name="rating" value="3"><br>
+                    <label for="four_star" style="color:yellow">★★★★</label>★
+                    <input type="radio" id="four_star" name="rating" value="4"><br>
+                    <label for="five_star" style="color:yellow">★★★★★</label>
+                    <input type="radio" id="five_star" name="rating" value="5"><br>
+
+                </div>
+                <div class="mb-3">
+                    <label for="remarks"><p class="h5 m-2"><b>Remarks (if any)</b></p></label>
+                    <input type="text" class="form-control" id="remarks" name="remarks" style="height:100px;">
+                </div>
+                <button type="submit" class="btn btn-success m-2"><b>Submit</b></button>
+            </form>
+            <a href="{{ url_for('customer_dashboard') }}" class="btn btn-primary m-2"><b>Return to Dashboard</b></a>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

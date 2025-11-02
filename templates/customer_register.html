@@ -1,0 +1,42 @@
+{% extends "base_login.html" %}
+{% block title %}Employee Registration[XYZ Household Services]{% endblock %}
+{% block image %}<img src="{{ url_for('static', filename='pexels-photo-4247756.jpg') }}" width="100%" height="100%">{% endblock %}
+{% block content %}
+<form action="/register/customer" method="POST">
+    <h3 class="card-title text-center mb-4" style="color:white"><b>Customer Registration</b></h3>
+    <div class="mb-3">
+        <label for="first_name" class="form-label" style="color:white"><b>First Name</b></label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter your first name" required>
+    </div>
+    <div class="mb-3">
+        <label for="last_name" class="form-label" style="color:white"><b>Last Name</b></label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your last name">
+    </div>
+    <div class="mb-3">
+        <label for="username" class="form-label" style="color:white"><b>Username</b></label>
+        <input type="text" class="form-control" id="username" name="username" required placeholder="Enter your username">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label" style="color:white"><b>Password</b></label>
+        <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label" style="color:white"><b>Address</b></label>
+        <input type="text" class="form-control" id="address" name="address" required placeholder="Enter your address">
+    </div>
+    <div class="mb-3">
+        <label for="pincode" class="form-label" style="color:white"><b>PIN Code</b></label>
+        <input type="number" min="100000" max="999999" class="form-control" id="pincode" name="pincode" required placeholder="Enter your pincode">
+    </div>
+    <div class="mb-3">
+        <label for="contact_info" class="form-label" style="color:white"><b>Contact No</b></label>
+        <input type="number" min="1000000000" max="9999999999" class="form-control" id="contact_info" name="contact" required placeholder="Enter your contact no">
+    </div>
+    <div class="mb-2 text-center">
+        <button type="submit" class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 30%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Register</b></button>
+    </div>
+    <div class="mb-2">
+        <div class="form-text" style="color:white">Already have an account? Click <a href="/login/customer" style="color:#B1D4E0; font-weight: bold;">here</a> to login.</div>
+    </div>
+</form>
+{% endblock %}

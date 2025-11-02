@@ -1,0 +1,153 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Admin Dashboard[XYZ Household Services]{% endblock %}
+{% block nav_first %}<a class="nav-link active" href="{{url_for('admin_dashboard')}}"><b>Home</b></a>{% endblock %}
+{% block nav_second %}<a class="nav-link" href="{{url_for('admin_dashboard_summary')}}"><b>Summary</b></a>{% endblock %}
+{% block nav_third %}<a class="nav-link" href="{{url_for('admin_dashboard_search')}}"><b>Search</b></a>{% endblock %}
+{% block content %}
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <p class="h1 mb-3 mt-3"><b>Services</b></p>
+    {% for sub_list in service_list %}
+    <div class="row">
+      {% for service in sub_list %}
+      <div class="col">
+        <div class="card m-3" style="border: 1px solid #25292d;">
+          <div class="card-body">
+            <h4 class="card-title" style="color:white"><b>{{service.name}}</b></h5>
+            <p class="card-text" style="color:white">{{service.description}}</p>
+            <a href="/admin/edit/service/{{service.serv_id}}" class="btn btn-primary m-2"><b>Edit Service</b></a>      
+            <a href="/admin/delete/service/{{service.serv_id}}" class="btn btn-danger"><b>Delete Service</b></a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <a href="/admin/create/service"><button class="btn btn-success text-center m-3"><b>Create A Service</b></button></a>
+</div>
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <p class="h1 mb-3 mt-3"><b>Service Professionals</b></p>
+    <table class="table table-dark table-striped">
+      <thead>
+        <th>S. No.</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Experience(In Years)</th>
+        <th>Service Name</th>
+        <th>Average Rating</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+    {% if service_professionals | length != 0 %}
+        {% for professional in service_professionals %}
+            <tr>
+                <td class="align-middle">
+                    {{loop.index}}
+                </td>
+                <td class="align-middle">
+                    {{professional.first_name + " " + professional.last_name}}
+                </td>
+                <td class="align-middle">
+                    {{professional.user_name}}
+                </td>
+                <td class="align-middle">
+                    {{professional.experience}}
+                </td>
+                <td class="align-middle">
+                    {{professional.service_type}}
+                </td>
+                <td class="align-middle">
+                    {{professional.avg_rating}}
+                </td>
+                <td class="align-middle">
+                    {% if professional.approval_status == "Approved" %}
+                        <a href="/admin/block/professional/{{professional.pro_id}}"><button class="btn btn-warning text-center m-2"><b>Block</b></button></a>
+                        <a href="/admin/reject/professional/{{professional.pro_id}}"><button class="btn btn-danger text-center m-2"><b>Delete</b></button></a>
+                    {% elif professional.approval_status == "Blocked" %}
+                        <a href="/admin/unblock/professional/{{professional.pro_id}}" class="btn btn-warning"><b>Unblock</b></a>
+                        <a href="/admin/reject/professional/{{professional.pro_id}}" class="btn btn-danger"><b>Delete</b></a>
+                    {% elif professional.approval_status == "Pending" %}
+                        <a href="/admin/approve/professional/{{professional.pro_id}}"><button class="btn btn-success text-center m-2"><b>Approve</b></button></a>
+                        <a href="/admin/reject/professional/{{professional.pro_id}}"><button class="btn btn-danger text-center m-2"><b>Deny</b></button></a>
+                        <a href="/static/pdfs/{{professional.resume}}" target="_blank"><button class="btn btn-success text-center m-2"><b>View Docs</b></button></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th class="align-middle" colspan="7">
+                No service professionals found.
+            </th>
+        </tr>
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <p class="h1 mb-4 mt-3"><b>All Requests</b></p>
+    <table class="table table-dark table-striped">
+    <thead>
+    <tr>
+        <th>
+            S. No.
+        </th>
+        <th>
+            Name of the Assigned Professional
+        </th>
+        <th>
+            Username of the Assigned Professional
+        </th>
+        <th>
+            Requested Date
+        </th>
+        <th>
+            Completion Date
+        </th>
+        <th>
+            Status
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if service_requests | length != 0 %}
+        {% for request, professional in service_requests %}
+            <tr>
+                <td>
+                    {{loop.index}}
+                </td>
+                <td>
+                    {% if professional == None %}
+                        No Professional Accepted Yet
+                    {% else %}
+                        {{professional.first_name + " " + professional.last_name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if professional == None %}
+                        No Professional Accepted Yet
+                    {% else %}
+                        {{professional.user_name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {{request.date_of_request}}
+                </td>
+                <td>
+                    {{request.date_of_completion}}
+                </td>
+                <td>
+                    {{request.service_status}}
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th colspan="6">
+                No requests found.
+            </th>
+        </tr>
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

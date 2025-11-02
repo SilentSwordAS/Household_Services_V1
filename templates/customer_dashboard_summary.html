@@ -1,0 +1,59 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Customer Dashboard[XYZ Household Services]{% endblock %}
+{% block nav_first %}<a class="nav-link" href="{{url_for('customer_dashboard')}}"><b>Home</b></a>{% endblock %}
+{% block nav_second %}<a class="nav-link active" href="{{url_for('customer_dashboard_summary')}}"><b>Summary</b></a>{% endblock %}
+{% block nav_third %}<a class="nav-link" href="{{url_for('customer_dashboard_search')}}"><b>Search</b></a>{% endblock %}
+{% block content %}
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <p class="h1 mb-3 mt-3"><b>Summary of Service Requests</b></p>
+    <canvas id="admin_summary" class="m-4" style="background-color:white;width:60vw;height:30vh"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('admin_summary');
+  var x = {{ x | tojson | safe}};
+  var y = {{ y | tojson | safe}};
+  Chart.defaults.font.size = 20;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: x,
+      datasets: [{
+        data: y,
+        backgroundColor: [
+        'rgb(0, 172, 255)',
+        'rgb(0, 174, 0)',
+        'rgb(255, 223, 0)'
+        ],
+        borderWidth: 1,
+        categoryPercentage: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Requests',
+            color: 'black'
+          }
+          
+        },
+        x: {
+            title: {
+            display: true,
+            text: 'Request Status',
+            color: 'black'
+                    }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

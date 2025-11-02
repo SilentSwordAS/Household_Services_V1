@@ -1,0 +1,90 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Customer Dashboard[XYZ Household Services]{% endblock %}
+{% block nav_first %}<a class="nav-link" href="{{url_for('customer_dashboard')}}"><b>Home</b></a>{% endblock %}
+{% block nav_second %}<a class="nav-link" href="{{url_for('customer_dashboard_summary')}}"><b>Summary</b></a>{% endblock %}
+{% block nav_third %}<a class="nav-link active" href="{{url_for('customer_dashboard_search')}}"><b>Search</b></a>{% endblock %}
+{% block content %}
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <form action="/customer/dashboard/search" method="POST">
+        <h2 class="text-center m-5" style="color:white"><b>Search</b></h2>
+        <div class="mb-4 d-flex align-items-center justify-content-center">
+            <label for="filter" class="form-label m-2" style="color:white;"></label>
+            <select class="form-select" id="filter" name="filter" required>
+                <option value="">Choose from one of the filters below</option>
+                {% if filter_search == 'service_name' %}
+                    <option value="service_name" selected>Service Name</option>
+                {% else %}
+                    <option value="service_name">Service Name</option>
+                {% endif %}
+                {% if filter_search == 'pro_pincode' %}
+                    <option value="pro_pincode" selected>Pincode</option>
+                {% else %}
+                    <option value="pro_pincode">Pincode</option>
+                {% endif %}
+                {% if filter_search == 'professional_name' %}
+                    <option value="professional_name" selected>Professional Username</option>
+                {% else %}
+                    <option value="professional_name">Professional Username</option>
+                {% endif %}
+                {% if filter_search == 'avg_ratings' %}
+                    <option value="avg_ratings" selected>Average Ratings</option>
+                {% else %}
+                    <option value="avg_ratings">Average Ratings</option>
+                {% endif %}
+            </select>
+            <label for="search_input" class="form-label m-2" style="color:white;"></label>
+            <input type="text" class="form-control" id="search_input" name="search_input" value="{{last_input}}" placeholder="Enter your search query" style="width:33%">
+            <button type="submit" class="btn btn-primary m-2"><b>Search</b></button>
+            <a href="{{url_for('customer_dashboard_search')}}" class="btn btn-danger m-2"><b>Reset</b></a>
+        </div> 
+    </form>
+    <p class="h1 mb-3 mt-3"><b>Services Offered</b></p>
+    <table class="table table-dark table-striped">
+      <thead>
+        <th>S. No.</th>
+        <th>Professional Username</th>
+        <th>Pincode</th>
+        <th>Service Description</th>
+        <th>Service Name</th>
+        <th>Average Ratings</th>
+        <th>Actions</th>
+      </thead>
+    <tbody>
+    {% if service_professionals | length != 0 %}
+        {% for pro, service in service_professionals %}
+            <tr>
+                <td class="align-middle">
+                    {{loop.index}}
+                </td>
+                <td class="align-middle">
+                    {{pro.user_name}}
+                </td>
+                <td class="align-middle">
+                    {{pro.pincode}}
+                </td>
+                <td class="align-middle">
+                    {{pro.description}}
+                </td>
+                <td class="align-middle">
+                    {{pro.service_type}}
+                </td>
+                <td class="align-middle">
+                    {{pro.avg_rating}}
+                </td>
+                <td class="align-middle">
+                    <a href="/customer/create/request/{{service.serv_id}}/{{pro.pro_id}}" class="btn btn-primary"><b>Book Private Request</b></a>
+                    <a href="/customer/create/request/{{service.serv_id}}" class="btn btn-success"><b>Book Public Request</b></a>
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th class="align-middle" colspan="6">
+                No services found.
+            </th>
+        </tr>
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base_login.html" %}
+{% block title %}Homeowner Login[XYZ Household Services]{% endblock %}
+{% block image %}<img src="{{ url_for('static', filename='pexels-photo-7579042.jpeg') }}" width="100%" height="100%">{% endblock %}
+{% block content %}
+<form action="/login/customer" method="POST">
+    <h3 class="card-title text-center m-5" style="color:white"><b>Customer Login</b></h3>
+    <div class="mb-4">
+        <label for="username" class="form-label" style="color:white"><b>Username</b></label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+    </div>
+    <div class="mb-4">
+        <label for="password" class="form-label" style="color:white"><b>Password</b></label>
+        <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+    </div>
+    <div class="mb-4 text-center">
+        <button type="submit" class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 30%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Login</b></button>
+    </div>
+    <div class="mb-2">
+        <div class="form-text" style="color:white">First time here? Click <a href="/register/customer" style="color:#B1D4E0; font-weight: bold;">here</a> to register.</div>
+        <div class="form-text" style="color:white">Employees? Click <a href="/login/employee" style="color:#B1D4E0;font-weight: bold;">here</a> to redirect to your login page.</div>
+    </div>
+</form>
+{% endblock %}

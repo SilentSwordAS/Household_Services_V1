@@ -1,0 +1,30 @@
+{% extends "base_login.html" %}
+{% block title %}Edit Service[XYZ Household Services]{% endblock %}
+{% block image %}<img src="{{ url_for('static', filename='photo-1605152276897-4f618f831968.jpg') }}" width="100%" height="100%">{% endblock %}
+{% block content %}
+<form action="/admin/edit/service/{{service.serv_id}}" method="POST">
+    <h3 class="card-title text-center mb-4 mt-3" style="color:white"><b>Create A Service</b></h3>
+    <div class="mb-4">
+        <label for="service_name" class="form-label" style="color:white"><b>Service Name</b></label>
+        <input type="text" class="form-control" id="service_name" name="service_name" value="{{service.name}}" required>
+    </div>
+    <div class="mb-4">
+        <label for="service_rate" class="form-label" style="color:white"><b>Service Rate</b></label>
+        <input type="number" min="0" max="5000" class="form-control" id="service_rate" name="service_rate" value="{{service.price}}">
+    </div>
+    <div class="mb-4">
+        <label for="time_required" class="form-label" style="color:white"><b>Time Required</b></label>
+        <input type="number" min ="0" max="40" class="form-control" id="time_required" name="time_required" required value="{{service.time_required}}">
+    </div>
+    <div class="mb-4">
+        <label for="service_description" class="form-label" style="color:white"><b>Service Description</b></label>
+        <input type="text" class="form-control" id="service_description" name="service_description" required value="{{service.description}}">
+    </div>
+    <div class="mb-2 text-center">
+        <button type="submit" class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 30%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Edit Service</b></button><br>
+    </div>
+</form>
+<div class="text-center">
+    <a href="{{ url_for('admin_dashboard')}}"><button class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 50%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Return to Dashboard</b></button></a>
+</div>
+{% endblock %}

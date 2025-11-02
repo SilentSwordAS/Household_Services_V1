@@ -1,0 +1,115 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Admin Dashboard[XYZ Household Services]{% endblock %}
+{% block nav_first %}<a class="nav-link" href="{{url_for('admin_dashboard')}}"><b>Home</b></a>{% endblock %}
+{% block nav_second %}<a class="nav-link" href="{{url_for('admin_dashboard_summary')}}"><b>Summary</b></a>{% endblock %}
+{% block nav_third %}<a class="nav-link active" href="{{url_for('admin_dashboard_search')}}"><b>Search</b></a>{% endblock %}
+{% block content %}
+<div class="container-fluid text-center mt-3" style="background-color: #0C2D48; color:white;border:10px solid black;">
+    <form action="/admin/dashboard/search" method="POST">
+        <h2 class="text-center m-5" style="color:white"><b>Search</b></h2>
+        <div class="mb-4 d-flex align-items-center justify-content-center">
+            <label for="filter" class="form-label m-2" style="color:white;"></label>
+            <select class="form-select" id="filter" name="filter" required>
+                <option value="">Choose from one of the filters below</option>
+                {% if filter_search == 'service_name' %}
+                    <option value="service_name" selected>Service Name</option>
+                {% else %}
+                    <option value="service_name">Service Name</option>
+                {% endif %}
+                {% if filter_search == 'date_of_req' %}
+                    <option value="date_of_req" selected>Date Of Request</option>
+                {% else %}
+                    <option value="date_of_req">Date Of Request</option>
+                {% endif %}
+                {% if filter_search == 'professional_name' %}
+                    <option value="professional_name" selected>Professional Name</option>
+                {% else %}
+                    <option value="professional_name">Professional Name</option>
+                {% endif %}
+                {% if filter_search == 'customer_name' %}
+                    <option value="customer_name" selected>Customer Name</option>
+                {% else %}
+                    <option value="customer_name">Customer Name</option>
+                {% endif %}
+            </select>
+            <label for="search_input" class="form-label m-2" style="color:white;"></label>
+            <input type="text" class="form-control" id="search_input" name="search_input" value="{{last_input}}" placeholder="Enter your search query" style="width:33%">
+            <button type="submit" class="btn btn-primary m-2"><b>Search</b></button>
+            <a href="{{url_for('admin_dashboard_search')}}" class="btn btn-danger m-2"><b>Reset</b></a>
+        </div> 
+    </form>
+    <p class="h1 mb-3 mt-3"><b>Service Requests</b></p>
+    <table class="table table-dark table-striped">
+      <thead>
+        <th>S. No.</th>
+        <th>Assigned Professional Name</th>
+        <th>Assigned Professional Username</th>
+        <th>Customer Name</th>
+        <th>Customer Username</th>
+        <th>Service</th>
+        <th>Date Of Request</th>
+        <th>Date Of Completion</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </thead>
+    <tbody>
+    {% if service_requests | length != 0 %}
+        {% for req, customer, service_name, professional in service_requests %}
+            <tr>
+                <td class="align-middle">
+                    {{loop.index}}
+                </td>
+                <td class="align-middle">
+                    {% if professional != None %}
+                        {{professional.first_name + " " + professional.last_name}}
+                    {% else %}
+                        No professional accepted yet.
+                    {% endif %}
+                </td>
+                <td class="align-middle">
+                    {% if professional != None %}
+                        {{professional.user_name}}
+                    {% else %}
+                        No professional accepted yet.
+                    {% endif %}
+                </td>
+                <td class="align-middle">
+                    {{customer.first_name + " " + customer.last_name}}
+                </td>
+                <td class="align-middle">
+                    {{customer.user_name}}
+                </td>
+                <td class="align-middle">
+                    {{service_name}}
+                </td>
+                <td class="align-middle">
+                    {{req.date_of_request}}
+                </td>
+                <td class="align-middle">
+                    {{req.date_of_completion}}
+                </td>
+                <td class="align-middle">
+                    {{req.service_status}}
+                </td>
+                <td class="align-middle">
+                    {% if professional.approval_status == 'Blocked' %}
+                        <a href="/admin/unblock/professional/{{professional.pro_id}}" class="btn btn-warning"><b>Unblock</b></a>
+                        <a href="/admin/reject/professional/{{professional.pro_id}}" class="btn btn-danger"><b>Delete</b></a>
+                    {% elif professional.approval_status == 'Approved' %}
+                        <a href="/admin/block/professional/{{professional.pro_id}}" class="btn btn-warning"><b>Block</b></a>
+                        <a href="/admin/reject/professional/{{professional.pro_id}}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th class="align-middle" colspan="10">
+                No service requests found.
+            </th>
+        </tr>
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

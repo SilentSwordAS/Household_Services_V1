@@ -1,0 +1,25 @@
+{% extends "base_login.html" %}
+{% block title %}Edit Request[XYZ Household Services]{% endblock %}
+{% block image %}<img src="{{ url_for('static', filename='charlesdeluvio-E3IcPzvtawE-unsplash.jpg') }}" width="100%" height="100%">{% endblock %}
+{% block content %}
+<form action="/customer/edit/request/{{req.id}}" method="POST">
+    <h3 class="card-title text-center mb-4 mt-3" style="color:white"><b>Edit a Request</b></h3>
+    {% if req.service_status == "Closed" %}
+        <div class="mb-4">
+            <label for="remark" class="form-label" style="color:white"><b>Remarks</b></label>
+            <input type="text" class="form-control" id="remark" name="remark" value="{{req.remarks}}">
+        </div>
+    {% else %}
+        <div class="mb-4">
+            <label for="date_of_req" class="form-label" style="color:white"><b>Date of Request</b></label>
+            <input type="date" min="{{dor}}" class="form-control" id="date_of_req" name="date_of_req" value="{{req.date_of_req}}">
+        </div>
+    {% endif %}
+    <div class="mb-2 text-center">
+        <button type="submit" class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 40%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Edit Request</b></button><br>
+    </div>
+</form>
+<div class="text-center">
+    <a href="{{ url_for('customer_dashboard')}}" class="btn btn-primary mb-3" style="background-color: #B1D4E0; width: 60%; border-color: #B1D4E0; color: black; border-radius:25px;"><b>Return to Dashboard</b></a>
+</div>
+{% endblock %}
